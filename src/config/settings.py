@@ -6,6 +6,7 @@ Created by @AlmazYessenyazov
 
 from pathlib import Path
 
+PROJECT_NAME = 'Portfolio Project'
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'p2z%itjf)k2!r+rvfb#_#+s(169dr8_9q2_)xkmw_a2*%vi*v_'
 DEBUG = True
