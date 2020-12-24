@@ -47,6 +47,15 @@ class AccountManager(BaseUserManager):
 class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
     ''' User Account Auth model '''
 
+    MALE = 'MALE'
+    FEMALE = 'FEMALE'
+    OTHER = 'OTHER'
+    SEX = (
+        (MALE, 'Male'),
+        (FEMALE, 'Male'),
+        (OTHER, 'Other'),
+    )
+
     email = models.EmailField(
         verbose_name='E-mail',
         max_length=64,
@@ -74,7 +83,19 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
         max_length=15,
         verbose_name='Phone number',
         unique=True,
-    )  
+    )
+
+    birth_at = models.DateField(
+        verbose_name='Birthday',
+        null=True
+    )
+
+    sex = models.CharField(
+        verbose_name='Sex',
+        max_length=10,
+        choices=SEX,
+        default=MALE
+    )
 
     is_staff = models.BooleanField(
         default=False,
@@ -89,7 +110,7 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'phone_number', 
-        ]
+    ]
 
     objects = AccountManager()
 

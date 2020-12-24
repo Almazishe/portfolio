@@ -18,6 +18,7 @@ class SelfUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
     phone_number = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all())])
+    birth_at = serializers.DateField(required=False)
 
     class Meta:
         model = User
@@ -25,6 +26,8 @@ class SelfUserSerializer(serializers.ModelSerializer):
                   'last_name',
                   'email',
                   'phone_number',
+                  'sex',
+                  'birth_at',
                   'password',
                   'created_at',
                   'updated_at',
@@ -56,6 +59,8 @@ class SelfUserSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get('last_name', None)
         instance.first_name = validated_data.get('first_name', None)
         instance.phone_number = validated_data.get('phone_number', None)
+        instance.sex = validated_data.get('sex', None)
+        instance.birth_at = validated_data.get('birth_at', None)
 
         if password is not None:
             instance.set_password(password)
@@ -78,6 +83,7 @@ class FullUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
     phone_number = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all())])
+    birth_at = serializers.DateField(required=False)
 
     class Meta:
         model = User
@@ -130,11 +136,15 @@ class OtherUserSerializer(serializers.ModelSerializer):
                   'last_name',
                   'email',
                   'phone_number',
+                  'birth_at',
+                  'sex',
                   'uuid',
                   )
         read_only_fields = ('first_name',
                             'last_name',
                             'email',
                             'phone_number',
+                            'birth_at',
+                            'sex',
                             'uuid',
                             )

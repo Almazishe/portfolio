@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/', include([
         path('1.0.0/', include([
             path('auth/', include('apps.accounts.api.urls')),
+            path('locations/', include('apps.locations.api.urls')),
         ])),
     ])),
 ]
