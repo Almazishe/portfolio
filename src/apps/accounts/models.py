@@ -122,3 +122,6 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f'{self.last_name} {self.first_name} | {self.email}'
 
+    @property
+    def full_name(self):
+        return f'{self.last_name} {self.first_name}'

@@ -28,6 +28,12 @@ INSTALLED_APPS = [
     # Apps
     'apps.accounts',
     'apps.locations',
+    'apps.portfolios',
+    'apps.resumes',
+    'apps.resume_items',
+    'apps.resume_items.universities',
+    'apps.resume_items.languages',
+    'apps.resume_items.stacks',
 ]
 
 MIDDLEWARE = [
