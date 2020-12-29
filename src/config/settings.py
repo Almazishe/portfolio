@@ -23,13 +23,12 @@ INSTALLED_APPS = [
     'six',
     'taggit',
 
-
-
     # Apps
     'apps.accounts',
     'apps.locations',
     'apps.portfolios',
     'apps.resumes',
+    'apps.teams',
     'apps.resume_items',
     'apps.resume_items.universities',
     'apps.resume_items.languages',
@@ -110,7 +109,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static config
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -121,8 +119,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'static_'
 MEDIA_ROOT = BASE_DIR / 'media_'
 
-
 try:
     from .email_config import *
 except:
-    pass 
+    pass

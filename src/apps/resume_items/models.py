@@ -7,7 +7,7 @@ from slugify import slugify
 
 from apps.resume_items.languages.models import Language
 from apps.resume_items.universities.models import University, Faculty
-from apps.resumes.models import UserResume
+from apps.resumes.models import Resume
 from utils.models import BaseModel, DateModel
 
 
@@ -30,9 +30,10 @@ class ResumeLanguage(BaseModel, DateModel, models.Model):
     language = models.ForeignKey(to=Language,
                                  verbose_name='Language',
                                  on_delete=models.CASCADE)
-    resume = models.ForeignKey(to=UserResume,
+    resume = models.ForeignKey(to=Resume,
                                verbose_name='Resume',
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE,
+                               related_name='resume_languages')
     level = models.CharField(verbose_name='Level',
                              max_length=2,
                              choices=LAN_LEVELS,
@@ -43,14 +44,17 @@ class ResumeLanguage(BaseModel, DateModel, models.Model):
         verbose_name_plural = 'ResumeLanguages'
         ordering = ('-created_at',)
 
+    def __str__(self) -> str:
+        return f'{self.resume.owner.full_name} | {self.language.name} | {self.level}'
+
 
 class Education(BaseModel, DateModel, models.Model):
     """ User resumes education """
 
     year_choices = [(r, r) for r in range(1984, datetime.date.today().year + 10)]
 
-    resume = models.ForeignKey(to=UserResume,
-                               verbose_name='User resume education',
+    resume = models.ForeignKey(to=Resume,
+                               verbose_name='User resume',
                                on_delete=models.CASCADE,
                                related_name='resume_educations')
 
@@ -81,6 +85,14 @@ class Education(BaseModel, DateModel, models.Model):
                                            choices=year_choices,
                                            default=current_year, )
 
+    class Meta:
+        verbose_name = 'Education'
+        verbose_name_plural = 'Educations'
+        ordering = ('-created_at',)
+
+    def __str__(self) -> str:
+        return f'{self.resume.owner.full_name} | {self.university.name}'
+
 
 class WorkExperience(BaseModel, DateModel, models.Model):
     """ Word experience model """
@@ -104,16 +116,15 @@ class WorkExperience(BaseModel, DateModel, models.Model):
                                 default=None,
                                 help_text='Make null if "work till this moment"')
 
-    resume_type = models.ForeignKey(ContentType,
-                                    verbose_name='Resume users/teams',
-                                    on_delete=models.CASCADE,
-                                    related_name='work_experiences', )
-    resume = GenericForeignKey('resume_type', 'uuid')
+    resume = models.ForeignKey(Resume,
+                               verbose_name='Resume users/teams',
+                               on_delete=models.CASCADE,
+                               related_name='work_experiences', )
 
     class Meta:
         verbose_name = 'Work experience'
         verbose_name_plural = 'Work experiences'
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def __str__(self) -> str:
         return f'Work experience of {self.resume.owner.full_name}'

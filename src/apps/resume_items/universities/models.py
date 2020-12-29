@@ -29,7 +29,7 @@ class University(BaseModel, models.Model):
 
 
 class Faculty(BaseModel, models.Model):
-    """ Faculty model. Faculty of the unoversity """
+    """ Faculty model. Faculty of the university """
 
     university = models.ForeignKey(to=University,
                                    verbose_name='University',
