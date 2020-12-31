@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from utils.models import BaseModel, DateModel
+from utils.views import get_path
 
 from apps.teams.models import Team
 from apps.locations.models import City
@@ -9,6 +10,10 @@ from apps.resume_items.stacks.models import Stack
 
 # User auth model
 User = get_user_model()
+
+
+def get_img_path(instance, filename):
+    return get_path(instance, filename, 'resumes_images')
 
 
 class Resume(DateModel, BaseModel, models.Model):
@@ -24,6 +29,11 @@ class Resume(DateModel, BaseModel, models.Model):
                               verbose_name='Resume owner user',
                               on_delete=models.CASCADE,
                               related_name='resumes', )
+
+    img = models.ImageField(verbose_name='Resume image',
+                            upload_to=get_img_path,
+                            null=True,
+                            blank=True)
 
     teams = models.ManyToManyField(Team,
                                    verbose_name='Resume owner team',

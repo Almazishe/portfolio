@@ -5,10 +5,16 @@ from django.db.models import Sum
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from apps.resume_items.stacks.models import Stack
 from utils.models import BaseModel, DateModel
+from utils.views import get_path
 
 # User auth model
 User = get_user_model()
+
+
+def get_img_path(instance, filename):
+    return get_path(instance, filename, 'team_logos')
 
 
 class Team(BaseModel, DateModel, models.Model):
@@ -22,6 +28,11 @@ class Team(BaseModel, DateModel, models.Model):
                             blank=True,
                             unique=True)
 
+    logo = models.ImageField(verbose_name='Team logo',
+                             upload_to=get_img_path,
+                             null=True,
+                             blank=True)
+
     creator = models.ForeignKey(to=User,
                                 verbose_name='Team creator/owner',
                                 on_delete=models.SET_NULL,
@@ -31,15 +42,18 @@ class Team(BaseModel, DateModel, models.Model):
     stars = models.FloatField(verbose_name='Star rating',
                               default=0,
                               validators=(MinValueValidator(0),
-                                          MaxValueValidator(10),),)
+                                          MaxValueValidator(10),), )
 
     description = models.TextField(verbose_name='Team description',
                                    null=True,
                                    blank=True)
-    
+
     users = models.ManyToManyField(to=User,
                                    verbose_name='Teammates',
                                    blank=True,
+                                   related_name='teams')
+
+    stack = models.ManyToManyField(to=Stack,
                                    related_name='teams')
 
     class Meta:
@@ -74,7 +88,7 @@ class TeamComment(BaseModel, DateModel, models.Model):
     user = models.ForeignKey(to=User,
                              verbose_name='User',
                              related_name='written_comments',
-                             on_delete=models.CASCADE,)
+                             on_delete=models.CASCADE, )
     rating = models.FloatField(verbose_name='Rating given',
                                validators=(MinValueValidator(0),
                                            MaxValueValidator(10),)

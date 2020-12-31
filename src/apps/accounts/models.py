@@ -3,7 +3,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
 from utils.models import BaseModel, DateModel
+from utils.views import get_path
 
+
+def get_img_path(instance, filename):
+    return get_path(instance, filename, 'accounts_images')
 
 
 class AccountManager(BaseUserManager):
@@ -60,24 +64,29 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
         verbose_name='E-mail',
         max_length=64,
         unique=True,
-    )  
+    )
 
     is_email_verified = models.BooleanField(
         verbose_name='Verified email?',
         default=False,
-    )  
+    )
 
     first_name = models.CharField(
         verbose_name='First name',
         max_length=64,
         default='User',
-    )  
+    )
 
     last_name = models.CharField(
         verbose_name='Last name',
         max_length=64,
         default='Happy',
-    )  
+    )
+
+    img = models.ImageField(verbose_name='User image',
+                            upload_to=get_img_path,
+                            null=True,
+                            blank=True)
 
     phone_number = models.CharField(
         max_length=15,
@@ -100,7 +109,7 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(
         default=False,
         verbose_name='Staff?',
-    )  
+    )
 
     is_active = models.BooleanField(
         default=True,
@@ -109,7 +118,7 @@ class Account(BaseModel, DateModel, AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
-        'phone_number', 
+        'phone_number',
     ]
 
     objects = AccountManager()
