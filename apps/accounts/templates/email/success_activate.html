@@ -1,0 +1,9 @@
+{% autoescape off %}
+Здравствуйте {{ user.first_name }} {{ user.last_name }}
+Еще раз добро пожаловать на {{project_name}},
+
+Вы успешно активировали ваш аккаунт.
+<a href="{{protocol}}://{{ domain }}">перейти на сайт</a>
+
+С уважением {{project_name}}
+{% endautoescape %}

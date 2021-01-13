@@ -72,3 +72,17 @@ class Portfolio(BaseModel, DateModel, models.Model):
     is_team_porfolio = models.BooleanField(verbose_name='Is Team porfolio?',
                                            default=False)
 
+    projects = models.ManyToManyField(to=Project,
+                                      verbose_name='Projects',
+                                      related_name='portfolios')
+
+    class Meta:
+        verbose_name = 'Portfolio'
+        verbose_name_plural = 'Portfolios'
+        ordering = ('-created_at',)
+
+    def __str__(self) -> str:
+        if self.is_team_porfolio:
+            return f'{self.team.name}s portfolio'
+        return f'"{self.owner.full_name}"s portfolio'
+

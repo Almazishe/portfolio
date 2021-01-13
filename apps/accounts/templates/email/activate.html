@@ -1,0 +1,8 @@
+{% autoescape off %}
+Здравствуйте {{ user.first_name }} {{ user.last_name }}
+Добро пожаловать на {{project_name}},
+Пожалуйста, пройдите по ссылке ниже для подтверждения e-mail адреса:
+{{protocol}}://{{ domain }}/account/activate/{{uid}}/{{token}}
+
+С уважением {{project_name}}
+{% endautoescape %}
