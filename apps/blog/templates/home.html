@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+
+
+{% block style %}
+<style>
+    .box {
+        position: relative;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+    }
+
+    .box img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class='container'>
+    {% if request.user.is_authenticated %}
+    <div class='row bg-white rounded shadow px-5 py-4 mb-4'>
+        <form action="{% url 'post_create' %}" method='POST'>
+            {% csrf_token %}
+            <input type="submit" class='btn btn-primary'>
+            <div class='d-flex my-2 justify-content-between align-items-center'>
+                <input type="text" name="title" class="form-control w-50" placeholder="Title...">
+                <input type="file" name="image" class="form-control w-50" style='height: 38px'>
+            </div>
+            <textarea name="text" id="" cols="30" rows="2" class="form-control" placeholder="Description..."></textarea>
+        </form>
+    </div>
+    {% endif %}
+    {% for post in posts %}
+    <div class='row bg-white rounded shadow p-5 mb-4'>
+        <div class='col-12 d-flex mb-4'>
+            <a href='#' class='col-4 col-md-1 box'>
+                <img src="
+                    {% if post.is_team_post %}
+                        {{post.team.logo.url}}
+                    {% elif post.owner.img  %}
+                        {{post.owner.img.url}}
+                    {% else %}
+                        https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_1280.png
+                    {% endif %}
+                    " width='50px' height='50px' style='border-radius: 50%;' alt="">
+            </a>
+            <div class='col-10 px-3'>
+                <a href='#'>
+                    <h5 class='text-primary m-0'>
+                        {% if post.is_team_post %}
+                        <a href="">{{post.team}}</a>
+                        {% else %}
+                        <a href="">{{post.owner.full_name}}</a>
+                        {% endif %}
+                    </h5>
+                </a>
+                <span class='text-muted date'>
+                    {{post.created_at}}</span>
+            </div>
+        </div>
+        <h5 class='text-muted text-center'>
+            <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+        </h5>
+        <div class='col-12 col-md-12 py-2'>
+            <p class='text-muted'>{{post.text|linebreaks|truncatechars:200}}</p>
+            <a href="{{post.get_absolute_url}}">read more...</a>
+        </div>
+        <div class="col-12 col-md-12">
+            <img src="{{post.image.url}}" width="100%" alt="">
+        </div>
+        <hr class='my-3'>
+        <div class='mt-3'>
+            <div class='d-flex '>
+                <form action="{% url 'leave-comment' %}" method='POST' class="d-flex w-100">
+                    {% csrf_token %}
+                    <input type="hidden" name="user" value="{{request.user.pk}}">
+                    <input type="hidden" name="post" value="{{post.pk}}">
+                    <textarea class="form-control my-2" name='text' placeholder="Ответить..."></textarea>
+                    <input type="submit" class="btn btn-primary p-2 mx-3" style='height:40px; font-size: 13px'
+                        value="Leave comment">
+                </form>
+            </div>
+            {% get_comments count=2 post_id=post.uuid user=request.user %}
+            <a href="{{post.get_absolute_url}}">Show more...</a>
+
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script %}{% endblock script %}

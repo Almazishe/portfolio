@@ -1,0 +1,12 @@
+{% for subcomment in subcomments %}
+<div class='d-flex mx-5'>
+    <a href='#' class='box'>
+        <img src="{{subcomment.user.img.url}}" style='border-radius: 50%;' alt="">
+    </a>
+    <div class="d-flex flex-column mx-3 text-muted">
+        <h6 class="">{{subcomment.user.full_name}}</h6>
+        <span class='date'>{{subcomment.created_at}}</span>
+        <p>{{subcomment.text}}</p>
+    </div>
+</div>
+{% endfor %}

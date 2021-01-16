@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'six',
+    'taggit',
+    'crispy_forms',
 
     # apps
     'apps.accounts',
+    'apps.teams',
+    'apps.blog',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +146,6 @@ if DEBUG:
     HTTP_PROTOCOL = 'http'
 else:
     HTTP_PROTOCOL ='https'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

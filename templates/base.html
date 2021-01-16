@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>{% block title %}Portfolio{% endblock title %}</title>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        .date {
+            font-size: 14px;
+        }
+    </style>
+    {% block style %}{% endblock %}
+</head>
+
+<body class='bg-light'>
+    <div class="w-100 container bg-white rounded my-0 my-md-3 shadow">
+        <nav class="navbar navbar-light bg-white">
+            <div class="container-fluid">
+                <a class="navbar-brand text-link">TeamTeam</a>
+                <form class="d-none d-md-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search text-dark"
+                            aria-hidden="true"></i></button>
+                </form>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-lg-2 text-dark  text-light rounded">
+                <ul class="list-group mb-3 list-unstyled ">
+                    <li class="my-2 ">
+                        <a class='d-flex justify-content-between lh-sm ' href="#">
+                            <div>
+                                <h6 class="my-0 text-primary">my blog</h6>
+                            </div>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="my-2 ">
+                        <a class='d-flex justify-content-between lh-sm' href="{% url 'home' %}">
+                            <div>
+                                <h6 class="my-0 text-primary">blog</h6>
+                            </div>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="my-2 ">
+                        <a class='d-flex justify-content-between lh-sm' href="#">
+                            <div>
+                                <h6 class="my-0 text-primary">portfolios</h6>
+                            </div>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="my-2 ">
+                        <a class='d-flex justify-content-between lh-sm' href="#">
+                            <div>
+                                <h6 class="my-0 text-primary">teams</h6>
+                            </div>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-7 col-lg-7 px-0 px-md-1">
+                {% block content %}{% endblock %}
+            </div>
+            <div class="col-md-3 col-lg-3 d-none d-md-block">
+                <div class=' bg-white rounded shadow px-0 py-3 sticky-top'>
+                    {% block right %}
+                    {% if request.user.is_authenticated %}
+                    <img src="
+                            {% if request.user.img  %}
+                                {{ request.user.img.url}}
+                            {% else %}
+                                https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_1280.png
+                            {% endif %}" width='100%' class='rounded w-100 p-3' alt="">
+                    <div class='d-flex flex-column px-4 my-4 '>
+                        <a class='' href="#">
+                            <h6 class="my-0 px-3 my-1 text-primary">profile</h6>
+                        </a>
+                        <a class='' href="#">
+                            <h6 class="my-0 px-3 my-1 text-primary">my portfolios</h6>
+                        </a>
+                        <hr class="my-2">
+                        <a class='' href="#">
+                            <h6 class="my-0 px-3 my-1 text-primary">settings</h6>
+                        </a>
+                        <a class='' href="{% url 'logout' %}">
+                            <h6 class="my-0 px-3 my-1 text-danger">log out</h6>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class='d-flex flex-column px-4 my-4 '>
+                        <a class='' href="{% url 'login' %}">
+                            <h6 class="my-0 px-3 my-1 text-primary">sign in</h6>
+                        </a>
+                        <a class='' href="#">
+                            <h6 class="my-0 px-3 my-1 text-primary">sign up</h6>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <footer class="my-3 pt-5 text-muted text-center text-small bg-white shadow p-3">
+            <p class="mb-1">&copy;2021 Almaz yessenyazov</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    {% block script %}{% endblock script %}
+</body>
+
+</html>
