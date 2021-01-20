@@ -28,11 +28,12 @@ class PostDetail(DetailView):
 
 class CreatePostView(View):
     def post(self, request, *args, **kwargs):
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, files=request.FILES)
+        print(request.POST)
         if form.is_valid():
-            form.save(commit=False)
-            form.owner = request.user
-            form.save()
+            post = form.save()
+            post.owner = request.user
+            post.save()
         else:
             print(form.errors)
             return redirect('home')

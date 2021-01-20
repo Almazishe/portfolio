@@ -69,6 +69,7 @@
         </div>
         <hr class='my-3'>
         <div class='mt-3'>
+            {% if user.is_authenticated %}
             <div class='d-flex '>
                 <form action="{% url 'leave-comment' %}" method='POST' class="d-flex w-100">
                     {% csrf_token %}
@@ -79,6 +80,9 @@
                         value="Leave comment">
                 </form>
             </div>
+            {% else %}
+            <p class='text-muted'>Authorize to write comment</p>
+            {% endif %}
             {% get_comments count=None post_id=post.uuid user=request.user %}
         </div>
     </div>
